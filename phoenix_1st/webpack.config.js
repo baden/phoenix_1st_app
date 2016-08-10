@@ -43,6 +43,10 @@ var config = module.exports = {
         test: /\.sass$/,
         loader: ExtractTextPlugin.extract('style', 'css!sass?indentedSyntax&includePaths[]=' + __dirname +  '/node_modules'),
       },
+      {
+        test: /\.css?$/,
+        loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
+      }
     ],
   },
 
