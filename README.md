@@ -90,10 +90,9 @@ docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm
 docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm i classnames --save
 docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm i bourbon-neat --save
 docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm i bourbon --save
+docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm i ./deps/phoenix/ --save
+docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm i ./deps/phoenix_html/ --save
 ```
-
- "phoenix": "file:deps/phoenix",
- "phoenix_html": "file:deps/phoenix_html"
 
 А можно вставить в phoenix_1st готовый список зависимостей:
 
@@ -135,7 +134,9 @@ docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm
   "react-router-redux": "^4.0.5",
   "redux": "^3.5.2",
   "redux-logger": "^2.6.1",
-  "redux-thunk": "^2.1.0"
+  "redux-thunk": "^2.1.0",
+  "phoenix": "file:deps/phoenix",
+  "phoenix_html": "file:deps/phoenix_html"
 }
 ```
 и выполнить
@@ -255,6 +256,13 @@ __phoenix_1st/web/static/js/application.js__
 ```
 import React                    from 'react';
 import ReactDOM                 from 'react-dom';
+
+const target = document.getElementById('main_container');
+
+const node = <div>Hello, world!!!</div>;
+
+ReactDOM.render(node, target);
+
 ```
 
 **phoenix_1st/web/static/css/application.sass**
@@ -321,3 +329,23 @@ docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st --link pg -p 4000
 Работает, и даже автоматически отслеживает изменения в исходниках.
 
 ### Запуск познее (уже из репозитория)
+
+Контейнер с базой данных
+
+```
+docker run --name pg -td library/postgres:latest
+```
+
+Контейнер с приложением
+
+```
+export D_OPTS="-it --rm -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v `pwd`:/home/composer/code -w /home/composer/code/phoenix_1st --link pg baden/phoenix"
+```
+
+```
+docker run $D_OPTS mix deps.get
+docker run $D_OPTS npm i
+docker run $D_OPTS mix ecto.create
+# docker run $D_OPTS mix ecto.migrate
+docker run -p 4000:4000 $D_OPTS mix phoenix.server
+```
