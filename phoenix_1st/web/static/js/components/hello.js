@@ -24,8 +24,10 @@ var Hello = React.createClass({
   //   this.props.data = data;
   //   console.log("Hello.mount");
   // }
-  getInitialState: () => {
+  getInitialState: function() {
+    console.log("Hello.initial", this);
     return {
+      name: this.props.name,
       data: data1
     };
   },
@@ -38,14 +40,22 @@ var Hello = React.createClass({
     }, 3000);
   },
 
+  handleAuthorChange: function(e) {
+    this.setState({name: e.target.value});
+  },
+
   render: function() {
     console.log("Hello.props = ", this);
     return (
       <div>
         <h1 className={styles.title}>
-          Hello, {this.props.name}!!!
+          Hello, <span>{this.state.name}</span>!!!
         </h1>
         <List data={this.state.data} />
+        <p>Name: <input type="text"
+          placeholder="Your name"
+          value={this.state.author}
+          onChange={this.handleAuthorChange}/></p>
       </div>
     );
   }
