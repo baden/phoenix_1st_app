@@ -21,15 +21,18 @@ Hello, world!!!
 
 ReactDOM.render(node, target);
 
-var state = {foo: "bar"};
-console.log("Hallo state=", state);
+// var state = {foo: "bar"};
+// console.log("Hallo state=", state);
 
-var action = (state) => ({ ...state, cool: "down"});
+// var action = (state) => ({ ...state, cool: "down"});
 // var action = function(state) {
 //   var _s = Object.assign({}, state);
 //   _s.cool = "down";
 //   return _s;
 // }
 
-var newState = action(state);
-console.log("newState=", newState);
+// var newState = action(state);
+// console.log("newState=", newState);
+
+// import Channel from "./services/channel";
+// console.log("======== Channel=", Channel);

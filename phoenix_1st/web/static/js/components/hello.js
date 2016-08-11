@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './hello.css';
-
 import List from './list';
+import Channel from '../services/channel'
 
-console.log("Wtf styles", styles);
+console.log("Channel", Channel);
+
+// console.log("Wtf styles", styles);
 
 var data1 = [
   {id: 1, author: "Pete Hunt", text: "This is one comment"},
@@ -28,6 +30,7 @@ var Hello = React.createClass({
     console.log("Hello.initial", this);
     return {
       name: this.props.name,
+      message: "",
       data: data1
     };
   },
@@ -43,19 +46,38 @@ var Hello = React.createClass({
   handleAuthorChange: function(e) {
     this.setState({name: e.target.value});
   },
+  handleMessageChange: function(e) {
+    this.setState({message: e.target.value});
+  },
+  handleSendClick: function(e) {
+    console.log("send", this.state.message);
+    var name = this.state.name;
+    var message = this.state.message;
+    Channel.send(name, message);
+    this.setState({message: ""});
+  },
 
   render: function() {
-    console.log("Hello.props = ", this);
     return (
       <div>
         <h1 className={styles.title}>
           Hello, <span>{this.state.name}</span>!!!
         </h1>
         <List data={this.state.data} />
-        <p>Name: <input type="text"
-          placeholder="Your name"
-          value={this.state.author}
-          onChange={this.handleAuthorChange}/></p>
+        <p>
+          Name:
+          <input type="text"
+            placeholder="Your name"
+            value={this.state.author}
+            onChange={this.handleAuthorChange}/>
+          <input type="text"
+            placeholder="Message"
+            value={this.state.message}
+            onChange={this.handleMessageChange}/>
+          <input type="button"
+            value="Send"
+            onClick={this.handleSendClick} />
+        </p>
       </div>
     );
   }
