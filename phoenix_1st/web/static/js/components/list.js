@@ -3,11 +3,13 @@ import Item from './item';
 
 export default class List extends React.Component {
   render() {
-    var nodes = this.props.data.map(function(e) {
-      return <Item author={e.author} key={e.id} text={e.text}/>
+    console.log(["List:render", this]);
+    var nodes = this.props.messages.map(function(e) {
+      return <Item author={e.name} text={e.message} key={e.creationDate}/>
     });
     return (
       <div className="list">
+      <div>Len: {this.props.messages.length}</div>
       { nodes }
       </div>
     );

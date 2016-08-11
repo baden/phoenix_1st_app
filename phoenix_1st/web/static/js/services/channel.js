@@ -9,16 +9,16 @@ function ChannelService()
 
   this.socket.connect();
 
-  this.channel = this.socket.channel("room:lobby", {token: "foo_bar"});
-  this.channel.on("new_msg", msg => console.log("Got message", msg) );
-  /*
-    // Sending
-
-  */
-  this.channel.join()
-    .receive("ok", ({messages}) => console.log("catching up", messages) )
-    .receive("error", ({reason}) => console.log("failed join", reason) )
-    .receive("timeout", () => console.log("Networking issue. Still waiting...") )
+  // this.channel = this.socket.channel("room:lobby", {token: "foo_bar"});
+  // // this.channel.on("new_msg", msg => console.log("Got message", msg) );
+  // /*
+  //   // Sending
+  //
+  // */
+  // this.channel.join()
+  //   .receive("ok", ({messages}) => console.log("catching up", messages) )
+  //   .receive("error", ({reason}) => console.log("failed join", reason) )
+  //   .receive("timeout", () => console.log("Networking issue. Still waiting...") )
 
   console.log(["channel = ", this.channel]);
 }

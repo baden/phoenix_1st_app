@@ -16,4 +16,4 @@ export default function configureStore(browserHistory) {
   return createStoreWithMiddleware(reducers);
 }
 
-console.log(["configureStore", configureStore]);
+// console.log(["configureStore", configureStore]);

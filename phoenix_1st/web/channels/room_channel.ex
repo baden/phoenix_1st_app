@@ -12,7 +12,12 @@ defmodule Phoenix1st.RoomChannel do
 
   def handle_in("new_msg", %{"name" => name, "body" => body}, socket) do
     IO.puts "Someone send a message:"  <> body
-    broadcast! socket, "new_msg", %{name: name, body: body}
+    msg = %{
+      timestamp: :erlang.system_time,
+      name: name,
+      body: body
+    }
+    broadcast! socket, "new_msg", msg
     {:noreply, socket}
   end
 
