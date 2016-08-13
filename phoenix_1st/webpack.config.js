@@ -5,7 +5,8 @@ var publicPath = 'http://localhost:4001/'
 var env = process.env.MIX_ENV || 'dev'
 var prod = env === 'prod'
 
-var entry = './web/static/js/index.js'
+// var entry = './web/static/js/index.js'
+var entry = './web/static/js/application.js'
 var hot = 'webpack-hot-middleware/client?path=' +
   publicPath + '__webpack_hmr'
 

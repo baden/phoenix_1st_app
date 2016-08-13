@@ -8,7 +8,7 @@ import { render } from 'react-dom'
 
 class Root extends Component {
   render () {
-    return <h1>omg so hot</h1>
+    return <h1>omg so hot!!!!</h1>
   }
 }
 
