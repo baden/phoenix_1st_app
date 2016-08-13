@@ -40,28 +40,6 @@ docker start pg
 
 Вместо bunch мы будем использовать webpack (интересно зачем?)
 
-А вот зачем:
-
-Цель - добиться работы [такой штуки](https://vimeo.com/100010922)
-
-Насколько я понимаю нужен **react-hot-loader**. Пример настройки можно взять,
-например, [отсюда](https://github.com/andrewfader/spincupcake/blob/master/package.json).
-
-* [Еще ссылка](https://gaearon.github.io/react-hot-loader/)
-
-Мне тут не нравится один момент. Сервер работает внутри феникса.
-Получается связность. А я бы хотел чтобы UI работал бы отдельно,
-и в перспективе был бы вынесен в отдельный модуль (репозиторий),
-и собирался бы отдельно.
-
-Сейчас обновлением занимается феникс, и это не совсем удобно.
-При любом изменении страница перезагружается целиком, и состояния сбрасываются.
-Горячее обновление средствами **react-hot-loader** было бы на порядок
-удобнее.
-
-Вот нашел еще [ссылку](http://mikker.github.io/2016/02/04/updated-phoenix-webpack-react-setup.html).
-
-
 Глобальные параметры для запуска докера (чтобы он мог создавать файлы с правами локального пользователя)
 ```
 export D_OPTS="-e USER_ID=`id -u` -e GROUP_ID=`id -g` -v `pwd`:/home/composer/code"
@@ -370,4 +348,52 @@ docker run $D_OPTS npm i
 docker run $D_OPTS mix ecto.create
 # docker run $D_OPTS mix ecto.migrate
 docker run -p 4000:4000 $D_OPTS mix phoenix.server
+```
+
+### Опишу тут мои потуги в реализации hot reload
+
+А вот зачем:
+
+Цель - добиться работы [такой штуки](https://vimeo.com/100010922)
+
+Насколько я понимаю нужен **react-hot-loader**. Пример настройки можно взять,
+например, [отсюда](https://github.com/andrewfader/spincupcake/blob/master/package.json).
+
+* [Еще ссылка](https://gaearon.github.io/react-hot-loader/)
+
+Мне тут не нравится один момент. Сервер работает внутри феникса.
+Получается связность. А я бы хотел чтобы UI работал бы отдельно,
+и в перспективе был бы вынесен в отдельный модуль (репозиторий),
+и собирался бы отдельно.
+
+Сейчас обновлением занимается феникс, и это не совсем удобно.
+При любом изменении страница перезагружается целиком, и состояния сбрасываются.
+Горячее обновление средствами **react-hot-loader** было бы на порядок
+удобнее.
+
+Вот нашел еще [ссылку](http://mikker.github.io/2016/02/04/updated-phoenix-webpack-react-setup.html).
+
+Но эта мне пока кажется лучше (того же автора, но более старая): (http://mikker.github.io/2015/07/16/react-hot-loader-and-phoenix.html)
+
+Ладно, будем пробовать по первой ссылке.
+
+
+Добавим модули (кажется тут не все правильно что куда):
+```
+docker run $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm install --save babel-polyfill
+docker run $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm install --save-dev webpack-dev-middleware webpack-hot-middleware express cors babel-preset-react-hmre
+```
+
+Насколько я понял, для работы нам понадобится еще один порт 4001.
+
+Правим webpack.config.js (см исходник в репозитории)
+И создаем промежуточный сервер webpack.dev.js (должен быть исполняемым)
+
+Я не понял один момент, описанный в конце статьи. Про генерацию дайджеста.
+Оставлю на потом.
+
+
+Теперь запуск выглядит так:
+```
+docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st --link pg -p 4000:4000 -p 4001:4001 baden/phoenix mix phoenix.server
 ```

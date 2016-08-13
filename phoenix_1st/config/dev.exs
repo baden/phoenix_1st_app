@@ -10,18 +10,20 @@ config :phoenix_1st, Phoenix1st.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
-  cache_static_lookup: false,
+  # cache_static_lookup: false,
   check_origin: false,
-  watchers: [
-    node: ["node_modules/webpack/bin/webpack.js", "--watch", "--color"]
-  ]
+  # Hot reload
+  watchers: [{Path.expand("webpack.dev.js"), []}]
+  # watchers: [
+  #   node: ["node_modules/webpack/bin/webpack.js", "--watch", "--color"]
+  # ]
 
 
 # Watch static and templates for browser reloading.
 config :phoenix_1st, Phoenix1st.Endpoint,
   live_reload: [
     patterns: [
-      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      # ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}

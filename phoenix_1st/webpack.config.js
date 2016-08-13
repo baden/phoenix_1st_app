@@ -1,63 +1,61 @@
-'use strict';
+var path = require('path')
+var webpack = require('webpack')
+var publicPath = 'http://localhost:4001/'
 
-var path = require('path');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var webpack = require('webpack');
+var env = process.env.MIX_ENV || 'dev'
+var prod = env === 'prod'
 
-function join(dest) { return path.resolve(__dirname, dest); }
+var entry = './web/static/js/index.js'
+var hot = 'webpack-hot-middleware/client?path=' +
+  publicPath + '__webpack_hmr'
 
-function web(dest) { return join('web/static/' + dest); }
+// function join(dest) { return path.resolve(__dirname, dest); }
 
-var config = module.exports = {
-  entry: {
-    application: [
-      web('css/application.sass'),
-      web('js/application.js'),
-    ],
-  },
+var plugins = [
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.NoErrorsPlugin(),
+  new webpack.DefinePlugin({
+    __PROD: prod,
+    __DEV: env === 'dev'
+  })
+]
 
+if (env === 'dev') {
+  plugins.push(new webpack.HotModuleReplacementPlugin())
+}
+
+module.exports = {
+  devtool: prod ? null : 'cheap-module-eval-source-map',
+  entry: prod ? entry : [hot, entry],
   output: {
-    path: join('priv/static'),
-    filename: 'js/application.js',
+    path: path.resolve(__dirname) + '/priv/static/js',
+    filename: 'index.bundle.js',
+    publicPath: publicPath
+    // path: join('priv/static'),
+    // filename: 'js/index.bundle.js',
   },
-
-  resolve: {
-    extensions: ['', '.js', '.sass'],
-    modulesDirectories: ['node_modules'],
-  },
-
+  plugins: plugins,
   module: {
-    noParse: /vendor\/phoenix/,
     loaders: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'babel',
-        query: {
-          cacheDirectory: true,
-          plugins: ['transform-decorators-legacy'],
-          presets: ['react', 'es2015', 'stage-2', 'stage-0'],
-        },
+        test: /\.jsx?$/,
+        loaders: ['babel'],
+        exclude: path.resolve(__dirname, 'node_modules')
       },
-      {
-        test: /\.sass$/,
-        loader: ExtractTextPlugin.extract('style', 'css!sass?indentedSyntax&includePaths[]=' + __dirname +  '/node_modules'),
-      },
+      // {
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: 'babel',
+      //   query: {
+      //     cacheDirectory: true,
+      //     plugins: ['transform-decorators-legacy'],
+      //     presets: ['react', 'es2015', 'stage-2', 'stage-0'],
+      //   },
+      // },
       {
         test: /\.css?$/,
         loader: 'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]'
       }
-    ],
-  },
-
-  plugins: [
-    new ExtractTextPlugin('css/application.css'),
-  ],
-};
-
-if (process.env.NODE_ENV === 'production') {
-  config.plugins.push(
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin({ minimize: true })
-  );
+    ]
+  }
 }
