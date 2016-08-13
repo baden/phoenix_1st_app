@@ -9,7 +9,7 @@ export default class List extends React.Component {
     });
     return (
       <div className="list">
-      <div>Length: {this.props.messages.length}</div>
+      <div>Chat messages: {this.props.messages.length}</div>
       { nodes }
       </div>
     );

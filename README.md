@@ -397,3 +397,7 @@ docker run $D_OPTS -w /home/composer/code/phoenix_1st baden/phoenix npm install 
 ```
 docker run -it --rm $D_OPTS -w /home/composer/code/phoenix_1st --link pg -p 4000:4000 -p 4001:4001 baden/phoenix mix phoenix.server
 ```
+
+Работает горячее обновление.
+Но насколько я понял, то обновление reducer-ов требует допиливания.
+Можно начать с [этого](https://github.com/jepezi/jump/blob/b27645d3e43cc28686c6476ca21904aa60e80781/web/src/redux/configureStore.dev.js)
