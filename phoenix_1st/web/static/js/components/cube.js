@@ -29,7 +29,7 @@ var Cube = React.createClass({
         // this.setState({color: new_color});
       }.bind(this)
     }, this.props);
-    console.log(["cubeProps = ", cubeProps]);
+    // console.log(["cubeProps = ", cubeProps]);
 
     return <Mesh {...cubeProps} />;
   }

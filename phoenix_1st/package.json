@@ -61,6 +61,7 @@
     "redux-logger": "^2.6.1",
     "redux-simple-router": "^2.0.4",
     "redux-thunk": "^2.1.0",
-    "three": "^0.74.0"
+    "three": "^0.74.0",
+    "three-orbit-controls": "^72.0.0"
   }
 }

@@ -1,9 +1,13 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import Game from './game';
 import Cube from './cube';
 import THREE from 'three';
 import { Renderer, Scene, Mesh, Object3D, PerspectiveCamera, AmbientLight, DirectionalLight } from 'react-three';
 import _ from 'lodash';
+// import OrbitControls from '../../lib/OrbitControls';
+import OrbitControls from './OrbitControls';
+
 
 // import ModelsStore from '../stores/models_store';
 // import ModelsAction from '../actions/models_action';
@@ -32,6 +36,7 @@ class App extends React.Component{
     }
     // this.state = ModelsStore.getSettings();
     // this.onChangeListener = this.onChange.bind(this);
+    // this._orbitControlsHandler = this._onControllerChange.bind(this);
   }
 
   // _onResize(){
@@ -41,6 +46,16 @@ class App extends React.Component{
 
   componentDidMount() {
     this.animate();
+    // console.log(["init OrbitControls", this, canvas]);
+    console.log(["this.refs.scene=", this.refs.scene]);
+    var canvas = document.querySelector( 'canvas' );
+    console.log(["canvas=", canvas]);
+    // let canvas = ReactDOM.findDOMNode(this.refs.scene);
+    this._camera = this.refs.camera;
+    this._orbitControls = new OrbitControls(this._camera, canvas);
+    // this._orbitControls.addEventListener('change', this._orbitControlsHandler, false);
+    // this.controls = new OrbitControls(this.refs.camera);
+    // this.controls = new OrbitControls(this, canvas);
     // window.addEventListener('resize', this.onWindowResize.bind(this), false);
     // ModelsStore.addChangeListener(this.onChangeListener);
     // window.addEventListener('resize', this._onResize);
@@ -48,11 +63,19 @@ class App extends React.Component{
   }
 
   componentWillUnmount() {
+    // this._orbitControls.removeEventListener('change', this._orbitControlsHandler, false);
     cancelAnimationFrame(this.frameId);
     // ModelsStore.removeChangeListener(this.onChangeListener);
     // window.removeEventListener('resize', this._onResize);
     window.removeEventListener('resize', this.onWindowResize);
   }
+
+  // _onControllerChange(e){
+  //     // SettingsAction.updateCamera({
+  //     //   position: this._camera.position,
+  //     //   quaternion: this._camera.quaternion
+  //     // });
+  // }
 
   onWindowResize() {
     this.setState({
@@ -112,7 +135,7 @@ class App extends React.Component{
     // <Game time={this.state.time} width={this.state.width} height={this.state.height} />
     return (
       <Renderer width={this.state.width} height={this.state.height} pixelRatio={window.devicePixelRatio} >
-        <Scene {...sceneProps}>
+        <Scene ref="scene" {...sceneProps}>
           {
             _.map(_.range(0,64), function(id) {
               let ix = id % 8;
@@ -128,7 +151,7 @@ class App extends React.Component{
             //<Cube position={pos}/>
           }
 
-          <PerspectiveCamera name="maincamera" {...cameraProps} />
+          <PerspectiveCamera ref="camera" name="maincamera" {...cameraProps} />
           <AmbientLight {...ambientLightProps} />
           <DirectionalLight {...directionalLightProps} />
         </Scene>
