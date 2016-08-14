@@ -8,7 +8,7 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   // combineReducers
-  console.log(["Channel/reducer", state, action]);
+  // console.log(["Channel/reducer", state, action]);
   switch (action.type) {
     case ACTIONS.RECEIVE_MESSAGE: {
       let messages = [...state.messages, action.message];

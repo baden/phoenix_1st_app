@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactTHREE from 'react-three';
+// import ReactTHREE from 'react-three';
 import THREE from 'three';
 
 // import { Renderer, Scene, Mesh, Object3D, PerspectiveCamera } from 'react-three';
@@ -22,7 +22,7 @@ var geometry = new THREE.PlaneBufferGeometry( 2, 2 );
 
 class Game extends React.Component {
 
-  static displayName = 'Scene3D';
+  // static displayName = 'Scene3D';
 
   constructor(props) {
     super(props);
@@ -58,7 +58,7 @@ class Game extends React.Component {
   }
 
   render() {
-    return <Mesh geometry={geometry} material={this.material} />;
+    return <Mesh geometry={geometry} material={this.material} id={this.props.id}/>;
   }
 
   // render() {

@@ -15,12 +15,12 @@ export default function configureStore(browserHistory) {
 
   var store = createStoreWithMiddleware(reducers);
 
-  console.group("TBD");
-  console.log("TBD: Must be patched for ht reload replace reducers?");
-  console.log(["NODE_ENV = ", process.env.NODE_ENV]);
-  console.log(["MIX_ENV = ", process.env.MIX_ENV]);
-  console.log(["(module.hot)=", module.hot]);
-  console.groupEnd();
+  // console.group("TBD");
+  // console.log("TBD: Must be patched for ht reload replace reducers?");
+  // console.log(["NODE_ENV = ", process.env.NODE_ENV]);
+  // console.log(["MIX_ENV = ", process.env.MIX_ENV]);
+  // console.log(["(module.hot)=", module.hot]);
+  // console.groupEnd();
 
   // Hot reload reducers
   // TBD: Это нужно делать только в отладочной версии.

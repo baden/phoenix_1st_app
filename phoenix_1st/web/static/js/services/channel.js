@@ -2,10 +2,10 @@ import { Socket }       from 'phoenix';
 
 function ChannelService()
 {
-  console.log("ChannelService:create");
+  // console.log("ChannelService:create");
   this.socket = new Socket("/socket", {params: {userToken: "123"}});
 
-  console.log(["socket = ", this.socket]);
+  // console.log(["socket = ", this.socket]);
 
   this.socket.connect();
 

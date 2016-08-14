@@ -1,6 +1,9 @@
 import React from 'react';
 import Game from './game';
-import { Renderer, Scene, Mesh, Object3D, PerspectiveCamera } from 'react-three';
+import Cube from './cube';
+import THREE from 'three';
+import { Renderer, Scene, Mesh, Object3D, PerspectiveCamera, AmbientLight, DirectionalLight } from 'react-three';
+import _ from 'lodash';
 
 // import ModelsStore from '../stores/models_store';
 // import ModelsAction from '../actions/models_action';
@@ -25,7 +28,7 @@ class App extends React.Component{
       this.setState({
         time: this.state.time + 0.05
       })
-      this.frameId = requestAnimationFrame(this.animate)
+      // this.frameId = requestAnimationFrame(this.animate)
     }
     // this.state = ModelsStore.getSettings();
     // this.onChangeListener = this.onChange.bind(this);
@@ -64,16 +67,85 @@ class App extends React.Component{
   // }
 
   render(){
-    var cameraprops = {position:{z: 1}};
+    const initialQ = new THREE.Quaternion();
 
+    var width = this.state.width;
+    var height = this.state.height;
+
+    var sceneProps = {
+      width: width,
+      height: height,
+      quaternion: initialQ,
+      camera: 'maincamera',
+      pointerEvents: ['onClick', 'onMouseMove']
+    };
+    var aspectRatio = width / height;
+    // var cameraprops = {position:{z: 1}};
+    var cameraProps = {
+      fov: 75,
+      aspect: aspectRatio,
+      near: 1,
+      far: 10000,
+      position: new THREE.Vector3(0, -240, 300),
+      lookat: new THREE.Vector3(0, 0, 0)
+    };
+
+    var ambientLightProps = {
+      color: new THREE.Color(0x333333),
+      intencity: 0.8,
+      target: new THREE.Vector3(0, 0, 0)
+    };
+
+    const directionalLightProps = {
+      color: new THREE.Color(0x808080),
+      intencity: 0.1,
+      position: new THREE.Vector3(-120, -50, 160)
+    };
+
+    var pos = new THREE.Vector3(0, 0, 0);
+
+    // function getPosition(id) {
+    //   const sign = Math.random() * 2 > 1 ? 1 : -1;
+    //   return Math.floor(Math.random() * 200) * sign;
+    // }
+
+    // <Game time={this.state.time} width={this.state.width} height={this.state.height} />
     return (
       <Renderer width={this.state.width} height={this.state.height} pixelRatio={window.devicePixelRatio} >
-        <Scene width={this.state.width} height={this.state.height} camera="maincamera">
-          <PerspectiveCamera name="maincamera" {...cameraprops} />
-          <Game time={this.state.time} width={this.state.width} height={this.state.height} />
+        <Scene {...sceneProps}>
+          {
+            _.map(_.range(0,64), function(id) {
+              let ix = id % 8;
+              let iy = id / 8 | 0;
+              let x = ix * 100 - 300;
+              let y = iy * 100 - 150;
+              let z = 0;//Math.floor(Math.random() * 100) - 100;
+              var pos = new THREE.Vector3(x, y, z);
+              return <Cube position={pos} id={id} key={id}/>
+            })
+          }
+          {
+            //<Cube position={pos}/>
+          }
+
+          <PerspectiveCamera name="maincamera" {...cameraProps} />
+          <AmbientLight {...ambientLightProps} />
+          <DirectionalLight {...directionalLightProps} />
         </Scene>
       </Renderer>
     );
+    // return (
+    //   <Renderer width={this.state.width} height={this.state.height} pixelRatio={window.devicePixelRatio} >
+    //     <Scene width={this.state.width} height={this.state.height} camera="maincamera">
+    //       <PerspectiveCamera name="maincamera" {...cameraprops} />
+    //       <Game time={this.state.time} width={this.state.width} height={this.state.height} />
+    //     </Scene>
+    //   </Renderer>
+    // );
+    // <Cube position={pos} id={2} key={2}/>
+    // <Game time={this.state.time} width={this.state.width} height={this.state.height} id={1} key={1}/>
+    // <Cube position={pos} id={2} key={2}/>
+
     // return(
     //   <div>
     //     <Game

@@ -3,7 +3,7 @@ import React                  from 'react';
 import MainLayout             from '../layouts/main';
 import View1                  from '../views/view1';
 
-console.log(["View1", View1]);
+// console.log(["View1", View1]);
 
 export default (
   <Route component={MainLayout}>

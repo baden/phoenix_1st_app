@@ -25,7 +25,7 @@ var data2 = [
 var Hello = React.createClass({
 
   getInitialState: function() {
-    console.log("Hello.initial", this);
+    // console.log("Hello.initial", this);
     // const {dispatch, channel} = this.props;
     return {
       name: this.props.name,
@@ -41,7 +41,7 @@ var Hello = React.createClass({
   componentDidMount: function() {
     var that = this;
     const store = this.context.store;
-    console.log(["Hello:mount", this, this.props.subscribe]);
+    // console.log(["Hello:mount", this, this.props.subscribe]);
 
     var channel = this.props.socket.channel("room:lobby", {token: "foo_bar"});
     // this.channel.on("new_msg", msg => console.log("Got message", msg) );
@@ -65,14 +65,14 @@ var Hello = React.createClass({
 
     that.setState({channel: channel});
 
-    store.subscribe(function() {
-      console.log("State changed:", store.getState());
-      // this.gotMessage();
-    });
-    setTimeout(() => {
-      console.log("Boo");
-      that.setState({data: data2});
-    }, 3000);
+    // store.subscribe(function() {
+    //   console.log("State changed:", store.getState());
+    //   // this.gotMessage();
+    // });
+    // setTimeout(() => {
+    //   console.log("Boo");
+    //   that.setState({data: data2});
+    // }, 3000);
   },
 
   // gotMessage: function(m) {
@@ -86,7 +86,7 @@ var Hello = React.createClass({
     this.setState({message: e.target.value});
   },
   handleSendClick: function(e) {
-    console.log("send", this.state);
+    // console.log("send", this.state);
     var name = this.state.name;
     var message = this.state.message;
     this.state.channel.push("new_msg", {name: name, body: message}, 10000)
@@ -107,7 +107,7 @@ var Hello = React.createClass({
 
   render: function() {
     const {messages} = this.props;
-    console.log(["Hello:render", this, messages]);
+    // console.log(["Hello:render", this, messages]);
     return (
       <div>
         <h1 className={styles.title}>
@@ -141,7 +141,7 @@ Hello.contextTypes = {
 };
 
 const select = (state) => {
-  console.log("Hello:select", state);
+  // console.log("Hello:select", state);
   return {
     channel: state.channel,
     messages: state.channel.messages

@@ -16,11 +16,11 @@ import App from './components/app';
 import { Socket }       from 'phoenix';
 
 let socket = new Socket("/socket", {params: {userToken: "123"}});
-console.log(["socket = ", socket]);
+// console.log(["socket = ", socket]);
 socket.connect();
 
 const store = configureStore(browserHistory);
-console.log(["store = ", store]);
+// console.log(["store = ", store]);
 const history = syncHistoryWithStore(browserHistory, store);
 
 const target = document.getElementById('main_container');
@@ -34,5 +34,5 @@ const node = (
     </Provider>
 );
 
-// ReactDOM.render(node, target);
-ReactTHREE.render(node, target);
+ReactDOM.render(node, target);
+// ReactTHREE.render(node, target);
