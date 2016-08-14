@@ -1,4 +1,5 @@
 import React                    from 'react';
+import ReactTHREE               from 'react-three';
 import ReactDOM                 from 'react-dom';
 
 import { browserHistory }       from 'react-router';
@@ -9,6 +10,7 @@ import configureStore           from './store';
 import Root                     from './containers/root';
 
 import Hello from './components/hello';
+import App from './components/app';
 // import List from './components/list';
 
 import { Socket }       from 'phoenix';
@@ -25,8 +27,12 @@ const target = document.getElementById('main_container');
 
 const node = (
   <Provider store={store}>
+    <div>
     <Hello name="world" socket={socket} />
+    <App />
+    </div>
     </Provider>
 );
 
-ReactDOM.render(node, target);
+// ReactDOM.render(node, target);
+ReactTHREE.render(node, target);
