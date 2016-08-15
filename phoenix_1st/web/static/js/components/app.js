@@ -47,10 +47,16 @@ class App extends React.Component{
   componentDidMount() {
     this.animate();
     // console.log(["init OrbitControls", this, canvas]);
-    console.log(["this.refs.scene=", this.refs.scene]);
-    var canvas = document.querySelector( 'canvas' );
-    console.log(["canvas=", canvas]);
+    // console.log(["this.refs.scene=", this.refs.renderer._THREErenderer.domElement]);
+    // var canvas = document.querySelector( 'canvas' );
+    // Грязный хак, тут явно что-то не чисто
+    console.log("this=", this);
+    // var domNode = this.getDOMNode();
+    // var domNode = this.refs.renderer.getDOMNode();
+    // console.log("domNode=", domNode);
+    var canvas = this.refs.renderer._THREErenderer.domElement;
     // let canvas = ReactDOM.findDOMNode(this.refs.scene);
+    console.log(["canvas=", canvas]);
     this._camera = this.refs.camera;
     this._orbitControls = new OrbitControls(this._camera, canvas);
     // this._orbitControls.addEventListener('change', this._orbitControlsHandler, false);
@@ -95,6 +101,15 @@ class App extends React.Component{
     var width = this.state.width;
     var height = this.state.height;
 
+    var renderProps = {
+      width: width,
+      height: height,
+      pixelRatio: window.devicePixelRatio,
+      antialias: true,
+      preserveDrawingBuffer: true
+    };
+
+
     var sceneProps = {
       width: width,
       height: height,
@@ -134,7 +149,7 @@ class App extends React.Component{
 
     // <Game time={this.state.time} width={this.state.width} height={this.state.height} />
     return (
-      <Renderer width={this.state.width} height={this.state.height} pixelRatio={window.devicePixelRatio} >
+      <Renderer ref="renderer" {...renderProps}>
         <Scene ref="scene" {...sceneProps}>
           {
             _.map(_.range(0,64), function(id) {
